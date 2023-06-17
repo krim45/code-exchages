@@ -1,25 +1,25 @@
-export type Exchange = {
+export interface IExchange {
   // ! Q object['string property'] 사용시 에러
   [index: string]: any;
   id: string;
   name: string;
   image: string;
-  trade_volume_24h_btc: number;
   trust_score: number;
   trust_score_rank: number;
-};
+  trade_volume_24h_btc: number;
+}
 
-export type ExchangeDetail = {
-  tickers: Ticker[];
-};
+export interface IExchangeDetail {
+  tickers: ITicker[];
+}
 
-export type Ticker = {
+export interface ITicker {
   base: string;
   target: string;
-};
+}
 
-export type TheadField = {
+export interface ITheadField {
   name: string;
-  property: string;
   sort: boolean;
-};
+  property: string;
+}

@@ -1,7 +1,7 @@
 import { atom } from 'recoil';
-import { Exchange } from 'types/type';
+import { IExchange } from 'types/type';
 
-export const exchangeListState = atom<Exchange[]>({
+export const exchangeListState = atom<IExchange[]>({
   key: 'exchangesListState',
   default: [],
 });

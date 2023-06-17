@@ -1,15 +1,15 @@
 import { fetchTickerListAndSave } from 'hooks/useTickerListApi';
 import { useEffect, useState } from 'react';
-import { Exchange, Ticker } from 'types/type';
+import { IExchange, ITicker } from 'types/type';
 
-interface ModalProps {
-  exchange?: Exchange;
+interface IModalProps {
+  exchange?: IExchange;
   isOpen: boolean;
   onClose: () => void;
 }
 
-const Modal = ({ exchange, isOpen, onClose }: ModalProps) => {
-  const [tickerList, setTickerList] = useState<Ticker[]>([]);
+const Modal = ({ exchange, isOpen, onClose }: IModalProps) => {
+  const [tickerList, setTickerList] = useState<ITicker[]>([]);
 
   useEffect(() => {
     if (isOpen) {

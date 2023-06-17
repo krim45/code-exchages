@@ -4,12 +4,12 @@ import { useRecoilState } from 'recoil';
 import { exchangeListState } from 'recoil/atoms';
 
 import { fetchExchangeListAndSave } from 'hooks/useExchangeListApi';
-import { Exchange, TheadField } from 'types/type';
+import { IExchange, ITheadField } from 'types/type';
 
 import Modal from 'components/Modal';
 
 // ! 따로 관리?
-const theadFieldList: TheadField[] = [
+const theadFieldList: ITheadField[] = [
   {
     name: '신뢰도 순위',
     property: 'trust_score_rank',
@@ -33,26 +33,24 @@ const theadFieldList: TheadField[] = [
 ];
 
 const Table = () => {
-  const [exchangeList, setExchangeList] = useRecoilState<Exchange[]>(exchangeListState);
+  const [exchangeList, setExchangeList] = useRecoilState<IExchange[]>(exchangeListState);
   const [sortFlag, setSortFlag] = useState<boolean>(true);
 
   const [openModal, setOpenModal] = useState<boolean>(false);
   // row 클릭할 때 전달? recoil로 관리?
-  const [exchange, setExchange] = useState<Exchange>();
+  const [exchange, setExchange] = useState<IExchange>();
 
   useEffect(() => {
     fetchExchangeListAndSave(setExchangeList);
   }, []);
 
   const handleTradeVolumeSort = (property: string) => {
-    const list = [...exchangeList].sort((a: Exchange, b: Exchange) =>
-      !sortFlag ? a[property] - b[property] : b[property] - a[property]
-    );
+    const list = [...exchangeList].sort((a, b) => (!sortFlag ? a[property] - b[property] : b[property] - a[property]));
     setExchangeList(list);
     setSortFlag(!sortFlag);
   };
 
-  const handleExchangeClick = (exchange: Exchange) => {
+  const handleExchangeClick = (exchange: IExchange) => {
     setExchange(exchange);
     setOpenModal(true);
   };
@@ -81,7 +79,7 @@ const Table = () => {
           </thead>
 
           <tbody>
-            {exchangeList.map((exchange: Exchange) => {
+            {exchangeList.map((exchange) => {
               const { trust_score_rank, id, name, image, trust_score, trade_volume_24h_btc: volume } = exchange;
 
               return (

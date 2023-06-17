@@ -1,10 +1,10 @@
 import { EXCHANGE_API_URL } from 'constants/const';
-import { Exchange } from 'types/type';
+import { IExchange } from 'types/type';
 
-export const fetchExchangeList = async (): Promise<Exchange[]> => {
+export const fetchExchangeList = async (): Promise<IExchange[]> => {
   try {
     const response = await fetch(EXCHANGE_API_URL);
-    const data: Exchange[] = await response.json();
+    const data: IExchange[] = await response.json();
 
     return data;
   } catch (err) {
