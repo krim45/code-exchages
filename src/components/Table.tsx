@@ -34,7 +34,7 @@ const theadFieldList: ITheadField[] = [
 
 const Table = () => {
   const [exchangeList, setExchangeList] = useRecoilState<IExchange[]>(exchangeListState);
-  const [sortFlag, setSortFlag] = useState<boolean>(true);
+  const [isSort, setIsSort] = useState<boolean>(true);
 
   const [openModal, setOpenModal] = useState<boolean>(false);
   // row 클릭할 때 전달? recoil로 관리?
@@ -45,9 +45,9 @@ const Table = () => {
   }, []);
 
   const handleTradeVolumeSort = (property: string) => {
-    const list = [...exchangeList].sort((a, b) => (!sortFlag ? a[property] - b[property] : b[property] - a[property]));
+    const list = [...exchangeList].sort((a, b) => (!isSort ? a[property] - b[property] : b[property] - a[property]));
     setExchangeList(list);
-    setSortFlag(!sortFlag);
+    setIsSort(!isSort);
   };
 
   const handleExchangeClick = (exchange: IExchange) => {
@@ -69,7 +69,7 @@ const Table = () => {
                 sort ? (
                   <th className='sort-field' key={idx} onClick={() => handleTradeVolumeSort(property)}>
                     {name}
-                    {sortFlag ? <span>&#9660;</span> : <span>&#9650;</span>}
+                    {isSort ? <span>&#9660;</span> : <span>&#9650;</span>}
                   </th>
                 ) : (
                   <th key={idx}>{name}</th>
