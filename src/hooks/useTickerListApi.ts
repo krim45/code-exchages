@@ -10,7 +10,7 @@ interface IParameter {
 }
 
 export const fetchTickerListAndSave = async (param: IParameter): Promise<void> => {
-  const { id, page = 1, setTickerList, setHasNextPage } = param;
+  const { id, page = 1, setTickerList } = param;
   const { data: tickersList } = await fetchTickersById(id, page);
 
   setTickerList(tickersList);
@@ -18,9 +18,7 @@ export const fetchTickerListAndSave = async (param: IParameter): Promise<void> =
 
 export const fetchMoreTickerList = async (param: IParameter): Promise<void> => {
   const { id, page = 1, setTickerList, setHasNextPage } = param;
-
   const { maxPage, data: tickersList } = await fetchTickersById(id, page);
-  console.log(maxPage, page);
 
   if (maxPage <= page) {
     setHasNextPage(false);
