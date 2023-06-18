@@ -1,18 +1,18 @@
 import { useState } from 'react';
-import { IExchange } from 'utils/type';
+import { IExchange, ITableField } from 'utils/type';
 
 interface ITheadThProps {
-  name: string;
-  property: keyof IExchange;
-  exchangeList: IExchange[];
-  setExchangeList: (exchangeList: IExchange[]) => void;
+  field: ITableField;
+  dataList: IExchange[];
+  setDataList: (dataList: IExchange[]) => void;
 }
 
-const TheadTh: React.FC<ITheadThProps> = ({ name, property, exchangeList, setExchangeList }) => {
+const TheadTh: React.FC<ITheadThProps> = ({ field, dataList, setDataList }) => {
+  const { label, property, sort } = field;
   const [isSort, setIsSort] = useState<boolean>(false);
 
   const handleSortExchangeList = () => {
-    const sortedExchangeList = [...exchangeList].sort((a: IExchange, b: IExchange) => {
+    const sortedExchangeList = [...dataList].sort((a: IExchange, b: IExchange) => {
       const valueA = a[property];
       const valueB = b[property];
 
@@ -28,14 +28,14 @@ const TheadTh: React.FC<ITheadThProps> = ({ name, property, exchangeList, setExc
       return 0;
     });
 
-    setExchangeList(sortedExchangeList);
+    setDataList(sortedExchangeList);
     setIsSort(!isSort);
   };
 
   return (
     <th key={property} onClick={() => handleSortExchangeList()}>
-      {name}
-      {isSort ? <span>&#9650;</span> : <span>&#9660;</span>}
+      {label}
+      {sort ? isSort ? <span>&#9650;</span> : <span>&#9660;</span> : null}
     </th>
   );
 };

@@ -1,11 +1,11 @@
 import { RecoilRoot } from 'recoil';
-import Table from 'components/Table';
 import 'App.css';
+import ExchangeTable from 'pages/ExchangeTable';
 
 function App() {
   return (
     <div className='App'>
-      <Table />
+      <ExchangeTable />
     </div>
   );
 }

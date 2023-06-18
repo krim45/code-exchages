@@ -13,12 +13,15 @@ export interface IExchangeDetail {
 }
 
 export interface ITicker {
+  coin_id: string;
   base: string;
   target: string;
+  volume: number;
+  pair: string;
 }
 
-export interface ITheadField {
-  name: string;
+export interface ITableField {
+  label: string;
   property: string;
-  // sort: boolean;
+  sort: boolean;
 }

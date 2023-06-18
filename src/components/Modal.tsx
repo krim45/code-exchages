@@ -1,6 +1,9 @@
 import { fetchTickerListAndSave } from 'hooks/useTickerListApi';
 import { useEffect, useState } from 'react';
 import { IExchange, ITicker } from 'utils/type';
+import ShowMoreBtn from './ShowMoreBtn';
+import Table from './table/Table';
+import { tickerFieldList } from 'utils/config';
 
 interface IModalProps {
   exchange?: IExchange;
@@ -8,7 +11,7 @@ interface IModalProps {
   onClose: () => void;
 }
 
-const Modal = ({ exchange, isOpen, onClose }: IModalProps) => {
+const Modal: React.FC<IModalProps> = ({ exchange, isOpen, onClose }) => {
   const [tickerList, setTickerList] = useState<ITicker[]>([]);
 
   useEffect(() => {
@@ -17,14 +20,20 @@ const Modal = ({ exchange, isOpen, onClose }: IModalProps) => {
     }
   }, [isOpen, exchange]);
 
+  const fetchTickerListAndSaveWithPage = (page?: number) => {
+    fetchTickerListAndSave(exchange!.id, setTickerList, page);
+  };
+
   return !isOpen ? null : (
     <div className='modal-wrapper' onClick={onClose}>
       <div className='modal-body' onClick={(e) => e.stopPropagation()}>
-        <ul>
-          {tickerList.map(({ base, target }, idx) => (
-            <li key={idx}>{`${base}/${target}`}</li>
+        <Table theadList={tickerFieldList} dataList={tickerList} setDataList={setTickerList} />
+        {/* <ul>
+          {tickerList.map(({ base, target }) => (
+            <li key={base}>{`${base}/${target}`}</li>
           ))}
-        </ul>
+        </ul> */}
+        <ShowMoreBtn fetchHooks={fetchTickerListAndSaveWithPage} />
       </div>
     </div>
   );

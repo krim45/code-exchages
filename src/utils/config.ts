@@ -1,24 +1,42 @@
-import { ITheadField } from 'utils/type';
+import { ITableField } from 'utils/type';
 
-export const theadFieldList: ITheadField[] = [
+export const exchangeFieldList: ITableField[] = [
   {
-    name: '신뢰도 순위',
+    label: '신뢰도 순위',
     property: 'trust_score_rank',
-    // sort: false,
+    sort: true,
   },
   {
-    name: '거래소',
+    label: '거래소',
     property: 'name',
-    // sort: false,
+    sort: true,
   },
   {
-    name: '신뢰도',
+    label: '신뢰도',
     property: 'trust_score',
-    // sort: false,
+    sort: true,
   },
   {
-    name: '24시간 BTC 거래량',
+    label: '24시간 BTC 거래량',
     property: 'trade_volume_24h_btc',
-    // sort: true,
+    sort: true,
+  },
+];
+
+export const tickerFieldList: ITableField[] = [
+  {
+    label: '코인',
+    property: 'coin_id',
+    sort: false,
+  },
+  {
+    label: '거래쌍',
+    property: 'pair',
+    sort: false,
+  },
+  {
+    label: '거래량',
+    property: 'volume',
+    sort: true,
   },
 ];
