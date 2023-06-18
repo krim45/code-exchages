@@ -1,5 +1,5 @@
-import { EXCHANGE_API_URL } from 'constants/const';
-import { ITicker } from 'types/type';
+import { EXCHANGE_API_URL } from 'utils/const';
+import { ITicker } from 'utils/type';
 
 export const fetchTickersById = async (id: string): Promise<ITicker[]> => {
   try {

@@ -1,7 +1,7 @@
 import { fetchTickersById } from 'service/fetchTickersListById';
-import { Ticker } from 'types/type';
+import { ITicker } from 'utils/type';
 
-export const fetchTickerListAndSave = async (id: string, setTickerList: (exchangesList: Ticker[]) => void) => {
+export const fetchTickerListAndSave = async (id: string, setTickerList: (exchangesList: ITicker[]) => void) => {
   const tickerList = await fetchTickersById(id);
   setTickerList(tickerList);
 };

@@ -1,6 +1,5 @@
 export interface IExchange {
-  // ! Q object['string property'] 사용시 에러
-  [index: string]: any;
+  [index: string | number]: string | number;
   id: string;
   name: string;
   image: string;
@@ -20,6 +19,6 @@ export interface ITicker {
 
 export interface ITheadField {
   name: string;
-  sort: boolean;
   property: string;
+  // sort: boolean;
 }

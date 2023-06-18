@@ -1,5 +1,5 @@
-import { EXCHANGE_API_URL } from 'constants/const';
-import { IExchange } from 'types/type';
+import { EXCHANGE_API_URL } from 'utils/const';
+import { IExchange } from 'utils/type';
 
 export const fetchExchangeList = async (): Promise<IExchange[]> => {
   try {

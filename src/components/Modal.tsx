@@ -1,6 +1,6 @@
 import { fetchTickerListAndSave } from 'hooks/useTickerListApi';
 import { useEffect, useState } from 'react';
-import { IExchange, ITicker } from 'types/type';
+import { IExchange, ITicker } from 'utils/type';
 
 interface IModalProps {
   exchange?: IExchange;
