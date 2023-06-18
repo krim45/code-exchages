@@ -1,3 +1,5 @@
+import { SetterOrUpdater } from 'recoil';
+
 export interface IExchange {
   [index: string | number]: string | number;
   id: string;
@@ -13,6 +15,8 @@ export interface IExchangeDetail {
 }
 
 export interface ITicker {
+  [index: string | number]: string | number;
+  id: string;
   coin_id: string;
   base: string;
   target: string;
@@ -20,8 +24,20 @@ export interface ITicker {
   pair: string;
 }
 
-export interface ITableField {
+export interface ITableColumn {
   label: string;
   property: string;
-  sort: boolean;
+  sortable: boolean;
+  isSort: boolean;
 }
+
+export interface ITableProps {
+  theadList: ITableColumn[];
+  dataList: TableItem[];
+  setDataState: SetterOrUpdater<TableRowList>;
+  onClickRow?: (value: TableItem) => void;
+}
+
+export type TableItem = IExchange | ITicker;
+
+export type TableRowList = (IExchange | ITicker)[];

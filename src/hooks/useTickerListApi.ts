@@ -2,10 +2,32 @@ import { SetterOrUpdater } from 'recoil';
 import { fetchTickersById } from 'service/fetchTickersListById';
 import { ITicker } from 'utils/type';
 
-export const fetchTickerListAndSave = async (id: string, setTickerList: SetterOrUpdater<ITicker[]>, page?: number) => {
-  const tickerList = await fetchTickersById(id, page);
-  setTickerList((oldTickerList) => {
-    const newTickerList = oldTickerList ? [...oldTickerList, ...tickerList] : [];
+interface IParameter {
+  id: string;
+  page?: number;
+  setTickerList: SetterOrUpdater<ITicker[]>;
+  setHasNextPage: (hasNexPage: boolean) => void;
+}
+
+export const fetchTickerListAndSave = async (param: IParameter): Promise<void> => {
+  const { id, page = 1, setTickerList, setHasNextPage } = param;
+  const { data: tickersList } = await fetchTickersById(id, page);
+
+  setTickerList(tickersList);
+};
+
+export const fetchMoreTickerList = async (param: IParameter): Promise<void> => {
+  const { id, page = 1, setTickerList, setHasNextPage } = param;
+
+  const { maxPage, data: tickersList } = await fetchTickersById(id, page);
+  console.log(maxPage, page);
+
+  if (maxPage <= page) {
+    setHasNextPage(false);
+  }
+
+  setTickerList((prevTickerList) => {
+    const newTickerList = prevTickerList ? [...prevTickerList, ...tickersList] : [];
     return newTickerList;
   });
 };

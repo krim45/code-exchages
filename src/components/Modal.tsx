@@ -1,39 +1,42 @@
-import { fetchTickerListAndSave } from 'hooks/useTickerListApi';
+import { fetchMoreTickerList, fetchTickerListAndSave } from 'hooks/useTickerListApi';
 import { useEffect, useState } from 'react';
-import { IExchange, ITicker } from 'utils/type';
+import { ITicker, TableItem, TableRowList } from 'utils/type';
 import ShowMoreBtn from './ShowMoreBtn';
 import Table from './table/Table';
-import { tickerFieldList } from 'utils/config';
+import { tickerTableColumnList } from 'utils/tableColumnList';
+import { SetterOrUpdater } from 'recoil';
 
-interface IModalProps {
-  exchange?: IExchange;
+interface IProps {
+  item?: TableItem;
   isOpen: boolean;
   onClose: () => void;
 }
 
-const Modal: React.FC<IModalProps> = ({ exchange, isOpen, onClose }) => {
+const Modal: React.FC<IProps> = ({ item, isOpen, onClose }) => {
   const [tickerList, setTickerList] = useState<ITicker[]>([]);
+  const [hasNextPage, setHasNextPage] = useState<boolean>(true);
 
   useEffect(() => {
-    if (isOpen) {
-      fetchTickerListAndSave(exchange!.id, setTickerList);
+    if (isOpen && item?.id) {
+      fetchTickerListAndSave({ id: item.id, setTickerList, setHasNextPage });
     }
-  }, [isOpen, exchange]);
+  }, [isOpen, item]);
 
-  const fetchTickerListAndSaveWithPage = (page?: number) => {
-    fetchTickerListAndSave(exchange!.id, setTickerList, page);
+  const fetchMore = (page?: number) => {
+    if (item?.id) {
+      fetchMoreTickerList({ id: item.id, page, setTickerList, setHasNextPage });
+    }
   };
 
   return !isOpen ? null : (
     <div className='modal-wrapper' onClick={onClose}>
       <div className='modal-body' onClick={(e) => e.stopPropagation()}>
-        <Table theadList={tickerFieldList} dataList={tickerList} setDataList={setTickerList} />
-        {/* <ul>
-          {tickerList.map(({ base, target }) => (
-            <li key={base}>{`${base}/${target}`}</li>
-          ))}
-        </ul> */}
-        <ShowMoreBtn fetchHooks={fetchTickerListAndSaveWithPage} />
+        <Table
+          theadList={tickerTableColumnList}
+          dataList={tickerList}
+          setDataState={setTickerList as SetterOrUpdater<TableRowList>}
+        />
+        {hasNextPage && <ShowMoreBtn fetchMore={fetchMore} />}
       </div>
     </div>
   );

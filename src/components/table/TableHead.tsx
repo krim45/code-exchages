@@ -1,21 +1,53 @@
-import React from 'react';
-import TableHeadTh from 'components/table/TableHeadTh';
-import { IExchange, ITableField } from 'utils/type';
+import React, { useState } from 'react';
+import { ITableColumn, TableItem, ITableProps } from 'utils/type';
 
-interface ITableHead {
-  theadList: ITableField[];
-  dataList: IExchange[];
-  setDataList: (dataList: IExchange[]) => void;
-}
+const TableHead: React.FC<ITableProps> = ({ theadList, dataList, setDataState }) => {
+  const [columnList, setColumnList] = useState<ITableColumn[]>(theadList);
 
-const TableHead: React.FC<ITableHead> = ({ theadList, dataList, setDataList }) => {
+  const handleSortDataList = (property: string, isSort: boolean) => {
+    const sortedDataList = [...dataList].sort((a: TableItem, b: TableItem) => {
+      const valueA = a[property];
+      const valueB = b[property];
+
+      if (typeof valueA === 'number' && typeof valueB === 'number') {
+        return isSort ? valueA - valueB : valueB - valueA;
+      }
+      if (valueA > valueB) {
+        return isSort ? -1 : 1;
+      }
+      if (valueA < valueB) {
+        return isSort ? 1 : -1;
+      }
+      return 0;
+    });
+    setDataState(sortedDataList);
+  };
+
+  const handleColumnList = (property: string) => {
+    const newColumnList = [...columnList].map((column) => ({
+      ...column,
+      isSort: column.property === property ? !column.isSort : false,
+    }));
+    setColumnList(newColumnList);
+  };
+
   return (
     <thead>
       <tr>
-        {theadList.map((field) => {
-          const { property } = field;
-          return <TableHeadTh key={property} field={field} dataList={dataList} setDataList={setDataList} />;
-        })}
+        {columnList.map(({ label, property, sortable, isSort }) => (
+          <th
+            key={`${label}${property}`}
+            onClick={() => {
+              if (sortable) {
+                handleColumnList(property);
+                handleSortDataList(property, isSort);
+              }
+            }}
+          >
+            {label}
+            {sortable ? isSort ? <span>&#9650;</span> : <span>&#9660;</span> : null}
+          </th>
+        ))}
       </tr>
     </thead>
   );

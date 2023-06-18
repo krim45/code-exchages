@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { fetchExchangeListAndSave } from 'hooks/useExchangeListApi';
-import { useRecoilState } from 'recoil';
+import { SetterOrUpdater, useRecoilState } from 'recoil';
 import { exchangeListState } from 'recoil/atoms';
-import { exchangeFieldList } from 'utils/config';
-import { IExchange } from 'utils/type';
+import { exchangeTableColumnList } from 'utils/tableColumnList';
+import { IExchange, TableItem, TableRowList } from 'utils/type';
 
 import Modal from 'components/Modal';
 import Table from 'components/table/Table';
@@ -13,9 +13,10 @@ const ExchangeTable = () => {
   const [exchangeList, setExchangeList] = useRecoilState<IExchange[]>(exchangeListState);
   const [focusedExchange, setFocusedExchange] = useState<IExchange>();
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const [hasNextPage, setHasNextPage] = useState<boolean>(true);
 
   useEffect(() => {
-    fetchExchangeListAndSave(setExchangeList);
+    fetchExchangeListAndSave({ setExchangeList, setHasNextPage });
   }, []);
 
   const handleExchangeClick = (exchange: IExchange) => {
@@ -27,16 +28,18 @@ const ExchangeTable = () => {
     setIsOpenModal(!isOpenModal);
   };
 
+  const fetchMore = (page: number) => fetchExchangeListAndSave({ setExchangeList, page, setHasNextPage });
+
   return (
     <>
       <Table
-        theadList={exchangeFieldList}
+        theadList={exchangeTableColumnList}
         dataList={exchangeList}
-        setDataList={setExchangeList}
-        onClickRow={handleExchangeClick}
+        setDataState={setExchangeList as SetterOrUpdater<TableRowList>}
+        onClickRow={handleExchangeClick as (value: TableItem) => void}
       />
-      <ShowMoreBtn fetchHooks={(page: number) => fetchExchangeListAndSave(setExchangeList, page)} />
-      <Modal exchange={focusedExchange} isOpen={isOpenModal} onClose={handleOpenCloseModal} />
+      {hasNextPage && <ShowMoreBtn fetchMore={fetchMore} />}
+      <Modal item={focusedExchange} isOpen={isOpenModal} onClose={handleOpenCloseModal} />
     </>
   );
 };

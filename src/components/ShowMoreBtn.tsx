@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 
-interface IShowMoreBtnProps {
-  fetchHooks: (page: number) => void;
+interface IProps {
+  fetchMore: (page: number) => void;
 }
 
-const ShowMoreBtn: React.FC<IShowMoreBtnProps> = ({ fetchHooks }) => {
+const ShowMoreBtn: React.FC<IProps> = ({ fetchMore }) => {
   const [page, setPage] = useState<number>(2);
 
   const handleShowMoreClick = () => {
     setPage(page + 1);
-    fetchHooks(page);
+    fetchMore(page);
   };
 
   return (
