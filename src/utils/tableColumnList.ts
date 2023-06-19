@@ -10,14 +10,14 @@ export const exchangeTableColumnList: ITableColumn[] = [
   {
     label: '거래소',
     property: 'name',
-    sortable: false,
-    isSort: true,
+    sortable: true,
+    isSort: false,
   },
   {
     label: '신뢰도',
     property: 'trust_score',
-    sortable: false,
-    isSort: true,
+    sortable: true,
+    isSort: false,
   },
   {
     label: '24시간 BTC 거래량',
